@@ -21,6 +21,7 @@ import java.util.UUID;
 public class DatasetService {
 
     private final DatasetMetadataRepository repository;
+    private final ClassificationService classificationService;
 
     public DatasetMetadata createDataset(CreateDatasetRequest request) {
 
@@ -71,13 +72,15 @@ public class DatasetService {
             rowCount = Math.max(0, lines.count() - 1);
         }
 
+        StorageTier tier = classificationService.classify(file.getSize());
+
         DatasetMetadata dataset =
                 DatasetMetadata.builder()
                         .fileName(file.getOriginalFilename())
                         .fileType("CSV")
                         .fileSizeBytes(file.getSize())
                         .rowCount(rowCount)
-                        .storageTier(StorageTier.COLD)
+                        .storageTier(tier)
                         .accessCount(0L)
                         .createdAt(LocalDateTime.now())
                         .storageLocation(targetPath.toString())
