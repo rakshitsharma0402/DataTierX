@@ -2,6 +2,8 @@ package org.dataengineering.datatierx.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -27,7 +29,8 @@ public class DatasetMetadata {
 
     private Long rowCount;
 
-    private String storageTier;
+    @Enumerated(EnumType.STRING)
+    private StorageTier storageTier;
 
     private Long accessCount;
 
